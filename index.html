@@ -1,0 +1,230 @@
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Ventas de Maquillaje</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Chart.js para gráficos -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- jsPDF para exportar PDF -->
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Panel Principal - Sistema de Ventas</h1>
+    <nav>
+      <!-- Menú hamburguesa profesional y botones alineados -->
+      <button id="hamburger" class="hamburger" aria-label="Abrir/ocultar menú">
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+      </button>
+      <div class="nav-btn-group" id="navBtnGroup">
+        <button data-section="dashboard"><span>🏠</span> Resumen</button>
+        <button data-section="productos"><span>📦</span> Productos/Inventario</button>
+        <button data-section="ventas"><span>🧾</span> Ventas</button>
+        <button data-section="clientes"><span>👤</span> Clientes</button>
+        <button data-section="empleados"><span>👔</span> Empleados</button>
+        <button data-section="reportes"><span>📊</span> Reportes</button>
+        <!-- NUEVOS BOTONES a la derecha para importar/exportar datos -->
+        <button id="btnExportarDatos" style="background:#5a3e70;margin-left:auto;" title="Exportar Todos los Datos"><span>⬇️</span> Exportar Datos</button>
+        <button id="btnImportarDatos" style="background:#1e6cab;" title="Importar Datos"><span>⬆️</span> Importar Datos</button>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <section id="dashboard" class="active">
+      <h2>Indicadores Clave</h2>
+      <div class="dashboard-cards">
+        <div class="card">
+          <h3 id="ventasTotales">0</h3>
+          <p>Ventas Totales (Mes)</p>
+        </div>
+        <div class="card">
+          <h3 id="productosCriticos">0</h3>
+          <p>Productos por Agotarse</p>
+        </div>
+        <div class="card">
+          <h3 id="productosVendidos">0</h3>
+          <p>Producto Más Vendido</p>
+        </div>
+        <div class="card">
+          <h3 id="gananciasTotales">$0</h3>
+          <p>Ganancias (Mes)</p>
+        </div>
+      </div>
+      <div class="charts">
+        <canvas id="ventasChart"></canvas>
+        <canvas id="productosChart"></canvas>
+      </div>
+    </section>
+    <section id="productos">
+      <h2>Gestión de Productos e Inventario</h2>
+      <div class="acciones-superiores">
+        <button id="btnAddProducto">➕ Agregar Producto</button>
+      </div>
+      <table id="tablaProductos">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Costo</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Promoción</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Filas dinámicas -->
+        </tbody>
+      </table>
+    </section>
+    <section id="ventas">
+      <h2>Registro y Facturación de Ventas</h2>
+      <div class="acciones-superiores">
+        <button id="btnNuevaVenta">➕ Nueva Venta</button>
+      </div>
+      <table id="tablaVentas">
+        <thead>
+          <tr>
+            <th>Factura</th>
+            <th>Cliente</th>
+            <th>Fecha</th>
+            <th>Total</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Filas dinámicas -->
+        </tbody>
+      </table>
+    </section>
+    <section id="clientes">
+      <h2>Gestión de Clientes</h2>
+      <div class="acciones-superiores">
+        <button id="btnAddCliente">➕ Agregar Cliente</button>
+      </div>
+      <table id="tablaClientes">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Compras</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Filas dinámicas -->
+        </tbody>
+      </table>
+    </section>
+    <section id="empleados">
+      <h2>Control de Empleados y Sueldos</h2>
+      <div class="acciones-superiores">
+        <button id="btnAddEmpleado">➕ Agregar Empleado</button>
+      </div>
+      <table id="tablaEmpleados">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Sueldo Base</th>
+            <th>Horas Trab.</th>
+            <th>Total a Pagar</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Filas dinámicas -->
+        </tbody>
+      </table>
+    </section>
+    <section id="reportes">
+      <h2>Reportes Automáticos</h2>
+      <div class="acciones-superiores">
+        <button id="btnReporteVentas">📄 Reporte de Ventas</button>
+        <button id="btnReporteMargen">💰 Reporte de Margen de Ganancia</button>
+      </div>
+      <div id="contenedorReportes">
+        <!-- Reportes dinámicos -->
+      </div>
+    </section>
+  </main>
+  
+  <!-- Modales (placeholder, se manejan por JS)-->
+  <div id="modalContainer" class="modal-container" style="display:none;"></div>
+  
+  <footer>
+    <small>&copy; 2024 Mi Negocio de Maquillaje. Sistema Websim Demo.</small>
+  </footer>
+  <script type="module" src="main.js"></script>
+  <script>
+    // Hamburguesa ‒ lógica para mostrar/ocultar menú en dispositivos pequeños
+    const hamburger = document.getElementById('hamburger');
+    const navBtnGroup = document.getElementById('navBtnGroup');
+    hamburger.addEventListener('click', () => {
+      navBtnGroup.classList.toggle('open');
+      hamburger.classList.toggle('is-active');
+    });
+    // Cierra menú hamburguesa al seleccionar sección en móvil o pantalla pequeña
+    navBtnGroup.addEventListener('click', (ev) => {
+      if(ev.target.tagName==="BUTTON") {
+        navBtnGroup.classList.remove('open');
+        hamburger.classList.remove('is-active');
+      }
+    });
+    // Opcional: Cierra menú si se toca fuera de él (para UX)
+    document.addEventListener('click', (e) => {
+      if(window.innerWidth <= 900 &&
+         !navBtnGroup.contains(e.target) && !hamburger.contains(e.target)) {
+        navBtnGroup.classList.remove('open');
+        hamburger.classList.remove('is-active');
+      }
+    });
+    // Asegura accesibilidad: oculta/visualiza navBtnGroup al cambiar tamaño ventana
+    window.addEventListener('resize', () => {
+      if(window.innerWidth > 900) {
+        navBtnGroup.classList.remove('open');
+        hamburger.classList.remove('is-active');
+      }
+    });
+  </script>
+  <!-- Para importar/exportar rápido desde HTML por si main.js falla -->
+  <script>
+      // Exportar datos
+      document.getElementById('btnExportarDatos').onclick = function(){
+        const KEYS = ['productos_maq','clientes_maq','ventas_maq','empleados_maq'];
+        let datos = {};
+        for(let k of KEYS) datos[k]=localStorage.getItem(k);
+        let blob = new Blob([JSON.stringify(datos,null,2)], {type:'application/json'});
+        let url = URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.href = url; a.download = "datos_maquillaje.json";
+        document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),2000);
+      };
+      // Importar datos
+      document.getElementById('btnImportarDatos').onclick = function(){
+        let inp = document.createElement('input');
+        inp.type = 'file'; inp.accept = ".json,application/json";
+        inp.onchange = async function(){
+          let archivo = inp.files[0];
+          if(!archivo) return;
+          let txt = await archivo.text();
+          try {
+            let obj = JSON.parse(txt);
+            if(obj.productos_maq) localStorage.setItem('productos_maq', obj.productos_maq);
+            if(obj.clientes_maq) localStorage.setItem('clientes_maq', obj.clientes_maq);
+            if(obj.ventas_maq) localStorage.setItem('ventas_maq', obj.ventas_maq);
+            if(obj.empleados_maq) localStorage.setItem('empleados_maq', obj.empleados_maq);
+            alert("¡Datos importados! Recargando página...");
+            location.reload();
+          } catch(e){
+            alert("Archivo no válido.");
+          }
+        };
+        inp.click();
+      };
+  </script>
+</body>
+</html>
