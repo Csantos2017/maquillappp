@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MaquillApp - Sistema de Ventas</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Panel Principal - Sistema de Ventas</h1>
+    <nav>
+      <button data-section="dashboard">🏠 Resumen</button>
+      <button data-section="productos">📦 Productos</button>
+      <button data-section="ventas">🧾 Ventas</button>
+      <button data-section="clientes">👤 Clientes</button>
+      <button data-section="empleados">👔 Empleados</button>
+      <button data-section="reportes">📊 Reportes</button>
+    </nav>
+  </header>
+  <main>
+    <section id="dashboard" class="active">
+      <h2>Dashboard</h2>
+      <canvas id="ventasChart"></canvas>
+      <canvas id="productosChart"></canvas>
+    </section>
+    <section id="productos"><h2>Productos</h2><table id="tablaProductos"><tbody></tbody></table></section>
+    <section id="ventas"><h2>Ventas</h2><table id="tablaVentas"><tbody></tbody></table></section>
+    <section id="clientes"><h2>Clientes</h2><table id="tablaClientes"><tbody></tbody></table></section>
+    <section id="empleados"><h2>Empleados</h2><table id="tablaEmpleados"><tbody></tbody></table></section>
+    <section id="reportes"><h2>Reportes</h2><div id="contenedorReportes"></div></section>
+  </main>
+  <div id="modalContainer" class="modal-container"></div>
+  <footer><small>&copy; 2024 MaquillApp. Sistema de Ventas</small></footer>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>
